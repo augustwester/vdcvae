@@ -1,5 +1,7 @@
 # Conditional Very Deep VAE
 
+![conditional-vdvae-samples](samples.png)
+
 After reading [Rewon Child's paper on very deep variational autoencoders (VDVAE)](https://arxiv.org/abs/2011.10650), I felt inspired to see if I could make their model **conditional**. A conditional VAE is similar to a regular VAE but includes a label during the forward pass. This allows the model to pick up on the correlation between a label and its corresponding image features, which ultimately allows for more fine-grained control over the model's generated samples. For instance, once a conditional VAE has been trained on the CIFAR-10 dataset, you can specify that you want "horse" or "airplane" samples from the model's learned distribution.
 
 The VDVAE uses a hierarchical "top-down" structure inspired by the work of Sønderby et al. on [ladder variational autoencoders](https://arxiv.org/abs/1602.02282). In short, this model first computes a "bottom-up" pass of the input image to generate features. Then, a "top-down" pass samples multiple latent variables at multiple resolutions conditioned on the features extracted in the "bottom-up" pass. For much more on this, I suggest you read [the paper](https://arxiv.org/abs/2011.10650), which also includes the following helpful diagram:
