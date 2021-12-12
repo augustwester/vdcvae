@@ -19,3 +19,11 @@ python3 train.py
 ```
 
 If you wish to train on another dataset than CIFAR-10 (or if you wish to tweak the number of epochs, etc.), I encourage you to edit `train.py`.
+
+If you wish to simply sample from a pretrained model, you can download the weights [here](https://drive.google.com/uc?id=1wQhCqtOgr3ypLypqlLNGxG8F7Jq5xj6c) (note that the file size is 325MB), move the file into the repo folder under the name `weights.pt`, and then run:
+
+```
+python3 sample.py
+```
+
+This will sample 10 images of each of the 10 classes represented in the CIFAR-10 dataset of 32x32 images. Enjoy!
