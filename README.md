@@ -1,4 +1,4 @@
-# Conditional Very Deep VAE
+# Very Deep Conditional VAE
 
 ![conditional-vdvae-samples](samples.png)
 
