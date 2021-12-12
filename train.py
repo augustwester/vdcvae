@@ -8,40 +8,12 @@ from torch.nn import functional as F
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import LambdaLR
 from helpers import linear_warmup
-
+from hyperparams import get_default_hyperparams
 from model import VAE
 
 torch.set_default_tensor_type("torch.cuda.FloatTensor")
 
-class Hyperparams(dict):
-    def __getattr__(self, attr):
-        try: return self[attr]
-        except KeyError: return None
-
-    def __setattr__(self, attr, value):
-        self[attr] = value
-
-H = Hyperparams()
-H.grad_clip = 200.0
-H.skip_threshold = 400.0
-H.width = 384
-H.lr = 0.0002
-H.zdim = 16
-H.wd = 0.01
-H.dec_blocks = "1x1,4m1,4x2,8m4,8x5,16m8,16x10,32m16,32x21" # "layer string"
-H.enc_blocks = "32x11,32d2,16x6,16d2,8x6,8d2,4x3,4d4,1x3" # "layer string"
-H.warmup_iters = 100
-H.adam_beta1 = 0.9
-H.adam_beta2 = 0.9
-H.dataset = 'cifar10'
-H.n_batch = 16
-H.image_size = 32
-H.image_channels = 3
-H.bottleneck_multiple = 0.2
-H.no_bias_above = 0.01
-H.num_mixtures = 10
-H.k = 0
-
+H = get_default_hyperparams()
 vae = VAE(H)
 
 transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
@@ -97,20 +69,5 @@ for epoch in range(256):
             plt.show()
     print(f"Epoch {epoch} done")
     if epoch % 10 == 0:
-        torch.save(vae.state_dict(), f"vdcvae-epoch{epoch}.pt")
+        torch.save(vae.state_dict(), f"weights-epoch{epoch}.pt")
 print('Finished Training')
-
-"""
-classes = ["airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"]
-num_samples = 5
-_, ax = plt.subplots(num_samples, 10, figsize=(num_samples*5,15))
-for i in range(10):
-    img = torch.rand(num_samples,32,32,3)
-    label = torch.LongTensor([i]).cuda()
-    recs = vae.reconstruct(img, label, k=0)
-    for j in range(num_samples):
-        if j == 0: ax[j,i].set_title(classes[i])
-        ax[j,i].set_xticks([])
-        ax[j,i].set_yticks([])
-        ax[j,i].imshow(recs[j])
-"""
