@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-from torch.nn import functional as F
 from collections import defaultdict
 
 def draw_gaussian_diag_samples(mu, logsigma):

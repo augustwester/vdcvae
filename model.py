@@ -187,8 +187,8 @@ class VAE(HModule):
         distortion_per_pixel = self.decoder.out_net.nll(px_z, x)
         return distortion_per_pixel.mean(), rate_per_pixel.mean()
     
-    def reconstruct(self, x, y):
+    def reconstruct(self, x, y, k):
         activations = self.encoder.forward(x)
-        px_z, _ = self.decoder.forward(y, activations)
+        px_z, _ = self.decoder.forward(y, activations, k)
         recs = self.decoder.out_net.sample(px_z)
         return recs
